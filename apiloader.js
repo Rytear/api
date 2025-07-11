@@ -1,4 +1,7 @@
-document.getElementById('missing-script-a-overlay').style.display = 'none'
+onReady(() => {
+  const overlay = document.getElementById('missing-script-a-overlay');
+  if (overlay) overlay.style.display = 'none';
+});
 
 
 // Usage
