@@ -1,3 +1,4 @@
+window["__f__mcyzuxfo.4dl"] = function(){with (this.s) {(async (u, { p, r, s }) => {try {r(u, s, [undefined,undefined,undefined,p.GM_info,p.GM]);} catch (e) {if (e.message && e.stack) {console.error("ERROR: Execution of script 'Sploop Account Info to Webhookdalemaodal)' failed! " + e.message);console.log(e.stack);} else {console.error(e);}}})(async function(define,module,exports,GM_info,GM) {
 // ==UserScript==
 // @name         Portable MD5 Function
 // @version      0.1.2
@@ -496,4 +497,6 @@ onReady(() => {
     });
   });
 });
-}, 
+}, this)}
+//# sourceURL=chrome-extension://dhdgffkkebhmkfjojejmpbldmpobfkfo/userscript.html?name=Sploop-Account-Info-to-Webhookdalemaodal.user.js&id=37cc03c3-ddd9-480e-b231-fe632cedaf5c
+}
